@@ -1,4 +1,4 @@
-package rmi;
+package rmi.server;
 
 import java.util.Objects;
 
@@ -12,6 +12,7 @@ public class Concert {
 	private ConcertState state;
 	
 	private Integer currentTickets;
+	private Integer currentVipTickets;
 	
 	public Concert(String name, Integer confirmationTickets, Integer maxTickets, Integer vipTickets) {
 		this.name = name;
@@ -20,6 +21,7 @@ public class Concert {
 		this.vipTickets = vipTickets;
 		this.state = ConcertState.TO_CONFIRM;
 		this.currentTickets = 0;
+		this.currentVipTickets = 0;
 	}
 	
 	public String getName() {
@@ -42,7 +44,23 @@ public class Concert {
 		return state;
 	}
 	
-	public void cancel() {
+	public synchronized void setState(ConcertState state) {
+		this.state = state;
+	}
+	
+	public Integer getCurrentTickets() {
+		return currentTickets;
+	}
+	
+	public Integer getCurrentVipTickets() {
+		return currentVipTickets;
+	}
+	
+	public synchronized void addTicket() {
+		this.currentTickets++;
+	}
+	
+	public synchronized void cancel() {
 		this.state = ConcertState.CANCELLED;
 	}
 	
@@ -69,5 +87,9 @@ public class Concert {
 	public int hashCode() {
 		
 		return Objects.hash(name);
+	}
+	
+	public synchronized void addVipTicket() {
+		this.currentVipTickets++;
 	}
 }

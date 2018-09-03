@@ -1,4 +1,4 @@
-package rmi;
+package rmi.server;
 
 public enum ConcertState {
 	TO_CONFIRM,
